@@ -9,7 +9,7 @@ export default defineConfig({
     port: 10000,
     proxy: {
       '/api': {
-        target: 'http://localhost:8080/api',
+        target: 'https://medihacks-2024-1.onrender.com/api',
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/api/, '')

@@ -13,6 +13,8 @@ const localStrategy = require('passport-local').Strategy;
 const JWTstrategy = require('passport-jwt').Strategy;
 const ExtractJWT = require('passport-jwt').ExtractJwt;
 
+const allowedOrigins = ['http://localhost:5173', 'https://medihacks-2024.onrender.com'];
+
 export class App {
   private app: express.Application = express();
   private port: string = process.env.PORT || '8080';
@@ -35,7 +37,13 @@ export class App {
     this.app.use(bodyParser.json());
     this.app.use(
       cors({
-        origin: 'http://localhost:5173'
+        origin: function (origin: any, callback: any) {
+          if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+          } else {
+            callback(new Error('Not allowed by CORS'));
+          }
+        }
       })
     );
   }
